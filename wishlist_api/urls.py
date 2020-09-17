@@ -18,6 +18,12 @@ from django.urls import path
 from items import views
 from django.conf import settings
 from django.conf.urls.static import static
+from api import views as api_views
+
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -31,6 +37,11 @@ urlpatterns = [
     path('user/logout/', views.user_logout, name='user-logout'),
 
     path('items/<int:item_id>/favorite/', views.item_favorite, name='item-favorite'),
+
+    path('api/login/', TokenObtainPairView.as_view(), name="api-login"),
+    path('api/register/', api_views.APIRegister.as_view(), name="api-register"),
+    path('api/items/', api_views.ItemsList.as_view(), name="api-list"),
+    path('api/items/<int:booking_id>/', api_views.ItemDetails.as_view(), name="api-detail"),
 ]
 
 urlpatterns+=static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
