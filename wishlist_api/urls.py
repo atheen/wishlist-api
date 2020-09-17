@@ -41,7 +41,7 @@ urlpatterns = [
     path('api/login/', TokenObtainPairView.as_view(), name="api-login"),
     path('api/register/', api_views.APIRegister.as_view(), name="api-register"),
     path('api/items/', api_views.ItemsList.as_view(), name="api-list"),
-    path('api/items/<int:booking_id>/', api_views.ItemDetails.as_view(), name="api-detail"),
+    path('api/items/<int:item_id>/', api_views.ItemDetails.as_view(), name="api-detail"),
 ]
 
 urlpatterns+=static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

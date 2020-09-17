@@ -10,6 +10,11 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields=['first_name', 'last_name']
 
+class FavoriteItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FavoriteItem
+        fields = ['user']
+
 class ItemsSerializer(serializers.ModelSerializer):
     favourited = serializers.SerializerMethodField()
     added_by= UserSerializer()
@@ -23,8 +28,10 @@ class ItemsSerializer(serializers.ModelSerializer):
         fields = ['image', 'name', 'description','detail','added_by','favourited']
 
     def get_favourited(self, obj):
-        user = obj.user
-        favourited = user.item_set.all()
+        favourite = FavoriteItem.objects.filter(item=obj).count()
+        return favourite
+        # serializer = FavoriteItemSerializer(instance=favorite)
+        # favourited = user.item_set.all()
 
 
 class ItemDetailsSerializer(serializers.ModelSerializer):
@@ -35,8 +42,10 @@ class ItemDetailsSerializer(serializers.ModelSerializer):
 
     def get_favourited_by(self, obj):
         items = FavoriteItem.objects.filter(item=obj)
-        user = items.user
-        return user.data
+        serializer = FavoriteItemSerializer(items,many=True)
+        return serializer.data
+
+
 class RegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
     class Meta:

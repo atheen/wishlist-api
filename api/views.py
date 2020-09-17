@@ -15,10 +15,7 @@ class ItemsList(ListAPIView):
 	queryset = Item.objects.all()
 	serializer_class = ItemsSerializer
 	filter_backends = [SearchFilter, OrderingFilter]
-	search_fields = "__all__"
-	permission_classes= [IsAuthenticated]
-
-
+	search_fields = ['name','description']
 
 
 class ItemDetails(RetrieveAPIView):
